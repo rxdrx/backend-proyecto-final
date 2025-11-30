@@ -50,6 +50,6 @@ npm start
 El servidor se ejecutará en `http://localhost:3000` (por defecto)
 
 ### URL de producción
-```
-(poner url de render luego de hacer el deploy)
-```
+
+<https://backend-proyecto-final-eep7.onrender.com/>
+
