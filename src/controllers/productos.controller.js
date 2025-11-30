@@ -1,11 +1,41 @@
 const productosMock = require('../mocks/productos.mock');
 
-// Obtener todos los productos
+// Obtener todos los productos (con filtros opcionales)
 const getAllProductos = (req, res) => {
+  const { categoria, precio_min, precio_max } = req.query;
+  
+  let productosFiltrados = [...productosMock];
+  
+  // Filtrar por categoría
+  if (categoria) {
+    productosFiltrados = productosFiltrados.filter(
+      p => p.id_categoria === parseInt(categoria)
+    );
+  }
+  
+  // Filtrar por precio mínimo
+  if (precio_min) {
+    productosFiltrados = productosFiltrados.filter(
+      p => p.precio >= parseFloat(precio_min)
+    );
+  }
+  
+  // Filtrar por precio máximo
+  if (precio_max) {
+    productosFiltrados = productosFiltrados.filter(
+      p => p.precio <= parseFloat(precio_max)
+    );
+  }
+  
   res.json({
     success: true,
-    data: productosMock,
-    total: productosMock.length
+    data: productosFiltrados,
+    total: productosFiltrados.length,
+    filtros_aplicados: {
+      categoria: categoria || null,
+      precio_min: precio_min || null,
+      precio_max: precio_max || null
+    }
   });
 };
 

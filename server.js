@@ -23,6 +23,8 @@ app.use('/api/productos', require('./src/routes/productos.routes'));
 app.use('/api/usuarios', require('./src/routes/usuarios.routes'));
 app.use('/api/categorias', require('./src/routes/categorias.routes'));
 app.use('/api/inventario', require('./src/routes/inventario.routes'));
+app.use('/api/pedidos', require('./src/routes/pedidos.routes'));
+app.use('/api/items-pedido', require('./src/routes/items_pedido.routes'));
 
 // Manejo de errores 404
 app.use((req, res) => {
