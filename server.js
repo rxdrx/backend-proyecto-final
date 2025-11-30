@@ -19,7 +19,10 @@ app.get('/', (req, res) => {
 });
 
 // Rutas de la API 
-
+app.use('/api/productos', require('./src/routes/productos.routes'));
+app.use('/api/usuarios', require('./src/routes/usuarios.routes'));
+app.use('/api/categorias', require('./src/routes/categorias.routes'));
+app.use('/api/inventario', require('./src/routes/inventario.routes'));
 
 // Manejo de errores 404
 app.use((req, res) => {
