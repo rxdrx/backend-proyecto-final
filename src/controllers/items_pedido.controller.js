@@ -1,102 +1,146 @@
-const itemsPedidoMock = require('../mocks/items_pedido.mock');
+const { ItemPedido } = require('../models');
 
 // Obtener todos los items de pedido
-const getAllItemsPedido = (req, res) => {
-  res.json({
-    success: true,
-    data: itemsPedidoMock,
-    total: itemsPedidoMock.length
-  });
+const getAllItemsPedido = async (req, res) => {
+  try {
+    const items = await ItemPedido.findAll();
+    
+    res.json({
+      success: true,
+      data: items,
+      total: items.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener items de pedido',
+      error: error.message
+    });
+  }
 };
 
 // Obtener un item de pedido por ID
-const getItemPedidoById = (req, res) => {
-  const { id } = req.params;
-  const item = itemsPedidoMock.find(i => i.id_item_pedido === parseInt(id));
-  
-  if (!item) {
-    return res.status(404).json({
+const getItemPedidoById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await ItemPedido.findByPk(id);
+    
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item de pedido no encontrado'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: item
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Item de pedido no encontrado'
+      message: 'Error al obtener item de pedido',
+      error: error.message
     });
   }
-  
-  res.json({
-    success: true,
-    data: item
-  });
 };
 
 // Obtener items por pedido
-const getItemsByPedido = (req, res) => {
-  const { id_pedido } = req.params;
-  const items = itemsPedidoMock.filter(i => i.id_pedido === parseInt(id_pedido));
-  
-  res.json({
-    success: true,
-    data: items,
-    total: items.length
-  });
+const getItemsByPedido = async (req, res) => {
+  try {
+    const { id_pedido } = req.params;
+    const items = await ItemPedido.findAll({
+      where: { id_pedido: parseInt(id_pedido) }
+    });
+    
+    res.json({
+      success: true,
+      data: items,
+      total: items.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener items por pedido',
+      error: error.message
+    });
+  }
 };
 
 // Crear un item de pedido
-const createItemPedido = (req, res) => {
-  const nuevoItem = {
-    id_item_pedido: itemsPedidoMock.length + 1,
-    ...req.body
-  };
-  
-  itemsPedidoMock.push(nuevoItem);
-  
-  res.status(201).json({
-    success: true,
-    message: 'Item de pedido creado exitosamente',
-    data: nuevoItem
-  });
+const createItemPedido = async (req, res) => {
+  try {
+    const nuevoItem = await ItemPedido.create(req.body);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Item de pedido creado exitosamente',
+      data: nuevoItem
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al crear item de pedido',
+      error: error.message
+    });
+  }
 };
 
 // Actualizar un item de pedido
-const updateItemPedido = (req, res) => {
-  const { id } = req.params;
-  const index = itemsPedidoMock.findIndex(i => i.id_item_pedido === parseInt(id));
-  
-  if (index === -1) {
-    return res.status(404).json({
+const updateItemPedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await ItemPedido.findByPk(id);
+    
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item de pedido no encontrado'
+      });
+    }
+    
+    await item.update(req.body);
+    
+    res.json({
+      success: true,
+      message: 'Item de pedido actualizado exitosamente',
+      data: item
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Item de pedido no encontrado'
+      message: 'Error al actualizar item de pedido',
+      error: error.message
     });
   }
-  
-  itemsPedidoMock[index] = {
-    ...itemsPedidoMock[index],
-    ...req.body
-  };
-  
-  res.json({
-    success: true,
-    message: 'Item de pedido actualizado exitosamente',
-    data: itemsPedidoMock[index]
-  });
 };
 
 // Eliminar un item de pedido
-const deleteItemPedido = (req, res) => {
-  const { id } = req.params;
-  const index = itemsPedidoMock.findIndex(i => i.id_item_pedido === parseInt(id));
-  
-  if (index === -1) {
-    return res.status(404).json({
+const deleteItemPedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await ItemPedido.findByPk(id);
+    
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item de pedido no encontrado'
+      });
+    }
+    
+    await item.destroy();
+    
+    res.json({
+      success: true,
+      message: 'Item de pedido eliminado exitosamente'
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Item de pedido no encontrado'
+      message: 'Error al eliminar item de pedido',
+      error: error.message
     });
   }
-  
-  itemsPedidoMock.splice(index, 1);
-  
-  res.json({
-    success: true,
-    message: 'Item de pedido eliminado exitosamente'
-  });
 };
 
 module.exports = {

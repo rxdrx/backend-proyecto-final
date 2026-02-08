@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Importar configuración de base de datos
+const { testConnection, syncDatabase } = require('./src/config/database');
+
 const app = express();
 
 // Middlewares
@@ -14,11 +17,21 @@ app.get('/', (req, res) => {
   res.json({
     message: 'API de Tienda de Calzado - Proyecto Final UTN',
     version: '1.0.0',
-    status: 'OK'
+    status: 'OK',
+    database: 'SQLite3 + Sequelize'
   });
 });
 
-// Rutas de la API 
+// Health check
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+// Rutas de la API
 app.use('/api/productos', require('./src/routes/productos.routes'));
 app.use('/api/usuarios', require('./src/routes/usuarios.routes'));
 app.use('/api/categorias', require('./src/routes/categorias.routes'));
@@ -34,12 +47,45 @@ app.use((req, res) => {
   });
 });
 
-// Configuración del puerto
-const PORT = process.env.PORT || 3000;
+// Función para iniciar el servidor
+const startServer = async () => {
+  try {
+    console.log('🔄 Iniciando servidor...\n');
+    
+    // 1. Probar conexión a la base de datos
+    await testConnection();
+    
+    // 2. Sincronizar modelos con la base de datos
+    // IMPORTANTE: En producción, usar { alter: true } o { force: false }
+    // force: true elimina y recrea las tablas (solo para desarrollo)
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    
+    if (isDevelopment) {
+      console.log('⚠️  Modo desarrollo: sincronizando modelos...');
+      await syncDatabase({ alter: true }); // Modifica tablas sin borrar datos
+    } else {
+      console.log('✅ Modo producción: usando base de datos existente');
+      await syncDatabase({ force: false }); // No modifica estructura
+    }
+    
+    // 3. Iniciar servidor Express
+    const PORT = process.env.PORT || 3000;
+    
+    app.listen(PORT, () => {
+      console.log('\n✅ Servidor iniciado correctamente!');
+      console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+      console.log(`🔗 URL: http://localhost:${PORT}`);
+      console.log(`💾 Base de datos: SQLite3 (database.sqlite)`);
+      console.log(`\n📝 Presiona CTRL+C para detener el servidor\n`);
+    });
+    
+  } catch (error) {
+    console.error('❌ Error al iniciar el servidor:', error);
+    process.exit(1);
+  }
+};
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
-  console.log(`📍 URL: http://localhost:${PORT}`);
-});
+// Iniciar servidor
+startServer();
 
 module.exports = app;

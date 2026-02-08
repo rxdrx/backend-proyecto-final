@@ -1,112 +1,154 @@
-const pedidosMock = require('../mocks/pedidos.mock');
-const itemsPedidoMock = require('../mocks/items_pedido.mock');
+const { Pedido, ItemPedido } = require('../models');
 
 // Obtener todos los pedidos
-const getAllPedidos = (req, res) => {
-  res.json({
-    success: true,
-    data: pedidosMock,
-    total: pedidosMock.length
-  });
+const getAllPedidos = async (req, res) => {
+  try {
+    const pedidos = await Pedido.findAll();
+    
+    res.json({
+      success: true,
+      data: pedidos,
+      total: pedidos.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener pedidos',
+      error: error.message
+    });
+  }
 };
 
 // Obtener un pedido por ID
-const getPedidoById = (req, res) => {
-  const { id } = req.params;
-  const pedido = pedidosMock.find(p => p.id_pedido === parseInt(id));
-  
-  if (!pedido) {
-    return res.status(404).json({
+const getPedidoById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pedido = await Pedido.findByPk(id);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido no encontrado'
+      });
+    }
+    
+    // Incluir los items del pedido
+    const items = await ItemPedido.findAll({
+      where: { id_pedido: parseInt(id) }
+    });
+    
+    res.json({
+      success: true,
+      data: {
+        ...pedido.toJSON(),
+        items
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Pedido no encontrado'
+      message: 'Error al obtener pedido',
+      error: error.message
     });
   }
-  
-  // Incluir los items del pedido
-  const items = itemsPedidoMock.filter(item => item.id_pedido === parseInt(id));
-  
-  res.json({
-    success: true,
-    data: {
-      ...pedido,
-      items
-    }
-  });
 };
 
 // Obtener pedidos por usuario
-const getPedidosByUsuario = (req, res) => {
-  const { id_usuario } = req.params;
-  const pedidos = pedidosMock.filter(p => p.id_usuario === parseInt(id_usuario));
-  
-  res.json({
-    success: true,
-    data: pedidos,
-    total: pedidos.length
-  });
+const getPedidosByUsuario = async (req, res) => {
+  try {
+    const { id_usuario } = req.params;
+    const pedidos = await Pedido.findAll({
+      where: { id_usuario: parseInt(id_usuario) }
+    });
+    
+    res.json({
+      success: true,
+      data: pedidos,
+      total: pedidos.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener pedidos por usuario',
+      error: error.message
+    });
+  }
 };
 
 // Crear un pedido
-const createPedido = (req, res) => {
-  const nuevoPedido = {
-    id_pedido: pedidosMock.length + 1,
-    ...req.body,
-    fecha_pedido: new Date().toISOString(),
-    fecha_actualizacion: new Date().toISOString()
-  };
-  
-  pedidosMock.push(nuevoPedido);
-  
-  res.status(201).json({
-    success: true,
-    message: 'Pedido creado exitosamente',
-    data: nuevoPedido
-  });
+const createPedido = async (req, res) => {
+  try {
+    const nuevoPedido = await Pedido.create(req.body);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Pedido creado exitosamente',
+      data: nuevoPedido
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al crear pedido',
+      error: error.message
+    });
+  }
 };
 
 // Actualizar un pedido
-const updatePedido = (req, res) => {
-  const { id } = req.params;
-  const index = pedidosMock.findIndex(p => p.id_pedido === parseInt(id));
-  
-  if (index === -1) {
-    return res.status(404).json({
+const updatePedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pedido = await Pedido.findByPk(id);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido no encontrado'
+      });
+    }
+    
+    await pedido.update(req.body);
+    
+    res.json({
+      success: true,
+      message: 'Pedido actualizado exitosamente',
+      data: pedido
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Pedido no encontrado'
+      message: 'Error al actualizar pedido',
+      error: error.message
     });
   }
-  
-  pedidosMock[index] = {
-    ...pedidosMock[index],
-    ...req.body,
-    fecha_actualizacion: new Date().toISOString()
-  };
-  
-  res.json({
-    success: true,
-    message: 'Pedido actualizado exitosamente',
-    data: pedidosMock[index]
-  });
 };
 
 // Eliminar un pedido
-const deletePedido = (req, res) => {
-  const { id } = req.params;
-  const index = pedidosMock.findIndex(p => p.id_pedido === parseInt(id));
-  
-  if (index === -1) {
-    return res.status(404).json({
+const deletePedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pedido = await Pedido.findByPk(id);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido no encontrado'
+      });
+    }
+    
+    await pedido.destroy();
+    
+    res.json({
+      success: true,
+      message: 'Pedido eliminado exitosamente'
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Pedido no encontrado'
+      message: 'Error al eliminar pedido',
+      error: error.message
     });
   }
-  
-  pedidosMock.splice(index, 1);
-  
-  res.json({
-    success: true,
-    message: 'Pedido eliminado exitosamente'
-  });
 };
 
 module.exports = {

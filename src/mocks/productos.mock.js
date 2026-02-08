@@ -1,7 +1,6 @@
 const productosMock = [
   // Nike
   {
-    id_producto: 1,
     nombre: 'Nike Air Max 270',
     descripcion: 'Zapatillas deportivas con tecnología Air visible de 270 grados',
     marca: 'Nike',
@@ -14,7 +13,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 2,
     nombre: 'Nike Revolution 6',
     descripcion: 'Zapatillas para correr cómodas y livianas',
     marca: 'Nike',
@@ -27,7 +25,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 3,
     nombre: 'Nike Air Force 1',
     descripcion: 'Clásico urbano atemporal',
     marca: 'Nike',
@@ -40,7 +37,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 4,
     nombre: 'Nike Pegasus 40',
     descripcion: 'Zapatillas de running con amortiguación reactiva',
     marca: 'Nike',
@@ -53,7 +49,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 5,
     nombre: 'Nike Court Vision Low',
     descripcion: 'Inspiradas en el básquet clásico',
     marca: 'Nike',
@@ -68,7 +63,6 @@ const productosMock = [
   
   // Adidas
   {
-    id_producto: 6,
     nombre: 'Adidas Ultraboost 22',
     descripcion: 'Zapatillas running de alto rendimiento',
     marca: 'Adidas',
@@ -81,7 +75,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 7,
     nombre: 'Adidas Stan Smith',
     descripcion: 'Zapatillas clásicas icónicas',
     marca: 'Adidas',
@@ -94,7 +87,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 8,
     nombre: 'Adidas Superstar',
     descripcion: 'El clásico con puntera de concha',
     marca: 'Adidas',
@@ -107,7 +99,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 9,
     nombre: 'Adidas Predator Edge',
     descripcion: 'Botines de fútbol profesionales',
     marca: 'Adidas',
@@ -120,7 +111,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 10,
     nombre: 'Adidas Forum Low',
     descripcion: 'Estilo retro basketball',
     marca: 'Adidas',
@@ -135,7 +125,6 @@ const productosMock = [
   
   // Puma
   {
-    id_producto: 11,
     nombre: 'Puma Suede Classic',
     descripcion: 'Zapatillas urbanas clásicas',
     marca: 'Puma',
@@ -148,7 +137,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 12,
     nombre: 'Puma RS-X',
     descripcion: 'Zapatillas con estilo retro-futurista',
     marca: 'Puma',
@@ -161,7 +149,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 13,
     nombre: 'Puma Future Rider',
     descripcion: 'Running vintage reinventado',
     marca: 'Puma',
@@ -174,7 +161,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 14,
     nombre: 'Puma Velocity Nitro',
     descripcion: 'Zapatillas de running con tecnología Nitro',
     marca: 'Puma',
@@ -187,7 +173,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 15,
     nombre: 'Puma Cali Sport',
     descripcion: 'Estilo californiano moderno',
     marca: 'Puma',
@@ -202,7 +187,6 @@ const productosMock = [
   
   // Topper
   {
-    id_producto: 16,
     nombre: 'Topper Volt',
     descripcion: 'Zapatillas deportivas argentinas',
     marca: 'Topper',
@@ -215,7 +199,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 17,
     nombre: 'Topper Tie Break III',
     descripcion: 'Clásicas zapatillas urbanas',
     marca: 'Topper',
@@ -228,7 +211,6 @@ const productosMock = [
     id_categoria: 5
   },
   {
-    id_producto: 18,
     nombre: 'Topper Sparta II',
     descripcion: 'Botines de fútbol',
     marca: 'Topper',
@@ -241,7 +223,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 19,
     nombre: 'Topper Move II',
     descripcion: 'Running económico y versátil',
     marca: 'Topper',
@@ -254,7 +235,6 @@ const productosMock = [
     id_categoria: 1
   },
   {
-    id_producto: 20,
     nombre: 'Topper Casual IV',
     descripcion: 'Zapatillas urbanas cómodas',
     marca: 'Topper',
@@ -269,7 +249,6 @@ const productosMock = [
   
   // Reef
   {
-    id_producto: 21,
     nombre: 'Reef Fanning',
     descripcion: 'Sandalias con destapador en la suela',
     marca: 'Reef',
@@ -282,7 +261,6 @@ const productosMock = [
     id_categoria: 4
   },
   {
-    id_producto: 22,
     nombre: 'Reef Voyage',
     descripcion: 'Sandalias de cuero premium',
     marca: 'Reef',
@@ -295,7 +273,6 @@ const productosMock = [
     id_categoria: 4
   },
   {
-    id_producto: 23,
     nombre: 'Reef Cushion Phantom',
     descripcion: 'Ojotas ultra cómodas',
     marca: 'Reef',
@@ -308,7 +285,6 @@ const productosMock = [
     id_categoria: 4
   },
   {
-    id_producto: 24,
     nombre: 'Reef X-S-1',
     descripcion: 'Sandalias deportivas',
     marca: 'Reef',
@@ -321,7 +297,6 @@ const productosMock = [
     id_categoria: 4
   },
   {
-    id_producto: 25,
     nombre: 'Reef Newport',
     descripcion: 'Ojotas clásicas',
     marca: 'Reef',
