@@ -35,3 +35,6 @@ coverage/
 # Temporal
 tmp/
 temp/
+
+# Base de datos
+database.sqlite
