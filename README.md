@@ -64,7 +64,3 @@ npm run db:reset
 
 El servidor se ejecutará en `http://localhost:3000` (por defecto)
 
-### URL de producción
-
-<https://backend-proyecto-final-eep7.onrender.com/>
-
