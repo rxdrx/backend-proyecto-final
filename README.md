@@ -33,7 +33,17 @@ npm install
 cp .env.example .env
 ```
 
-5. Iniciar el servidor:
+5. Iniciar la base de datos
+```bash
+npm run db:init
+```
+
+6. Agregar datos a la base de datos
+```bash
+npm run db:seed
+``` 
+
+7. Iniciar el servidor:
 
 **Modo desarrollo:**
 ```bash
@@ -43,6 +53,11 @@ npm run dev
 **Modo producción:**
 ```bash
 npm start
+```
+
+8. Reiniciar base de datos (opcional en caso de algun problema)
+```bash
+npm run db:reset
 ```
 
 ## Uso
