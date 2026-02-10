@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const verificarApiKey = require('./src/middlewares/APIKeyMiddleware');
 
 // Importar configuración de base de datos
 const { testConnection, syncDatabase } = require('./src/config/database');
@@ -30,6 +31,9 @@ app.get('/health', (req, res) => {
     uptime: process.uptime()
   });
 });
+
+// Aplicar middleware de API_key
+app.use('/api/*', verificarApiKey);
 
 // Rutas de la API
 app.use('/api/productos', require('./src/routes/productos.routes'));
