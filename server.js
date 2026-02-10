@@ -33,7 +33,7 @@ app.get('/health', (req, res) => {
 });
 
 // Aplicar middleware de API_key
-app.use('/api/*', verificarApiKey);
+app.use('/api', verificarApiKey);
 
 // Rutas de la API
 app.use('/api/productos', require('./src/routes/productos.routes'));
@@ -60,17 +60,10 @@ const startServer = async () => {
     await testConnection();
     
     // 2. Sincronizar modelos con la base de datos
-    // IMPORTANTE: En producción, usar { alter: true } o { force: false }
-    // force: true elimina y recrea las tablas (solo para desarrollo)
     const isDevelopment = process.env.NODE_ENV === 'development';
     
-    if (isDevelopment) {
-      console.log('⚠️  Modo desarrollo: sincronizando modelos...');
-      await syncDatabase({ alter: true }); // Modifica tablas sin borrar datos
-    } else {
-      console.log('✅ Modo producción: usando base de datos existente');
-      await syncDatabase({ force: false }); // No modifica estructura
-    }
+    console.log('✅ Usando base de datos existente (sin modificar estructura)');
+    await syncDatabase({ force: false });
     
     // 3. Iniciar servidor Express
     const PORT = process.env.PORT || 3000;

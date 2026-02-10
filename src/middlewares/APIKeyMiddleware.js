@@ -1,4 +1,6 @@
 const verificarApiKey = (req, res, next) => {
+  
+  
   // Obtener API_KEY del header de la petición
   const apiKey = req.headers['x-api-key'];
 
